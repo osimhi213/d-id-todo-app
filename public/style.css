@@ -1,0 +1,194 @@
+* {
+    box-sizing: border-box;
+    color: black;
+    font-family: 'Inter';
+    font-weight: 400;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    font-size: large;
+}
+
+#card-container {
+    width: 350px;
+    max-width: 350px;
+    height: 400px;
+    max-height: 900px;
+    margin: auto;
+    border: 1px solid #DEE2E6;
+    border-radius: 4px;
+
+}
+
+#card-header {
+    width: 100%;
+    height: 20%;
+    max-height: 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1%;
+    padding-right: 5%;
+    border-radius: 1px;
+    background-color: #F8F9FA;
+}
+
+#card-header > #card-title {
+    width: 30%;
+    flex-grow: 1;
+}
+#card-header > #card-title > h1 {
+    font-size: 1.3rem;
+    padding-left: 10%;
+}
+
+#card-header > #card-search {
+    width: 40%;
+    height: 60%;
+    border: 1px solid;
+    border-color: #CED4DA;
+    border-radius: 4px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+}
+
+#card-search > #card-search-input {
+    width: 98%;
+    height: 60%;
+    padding: 4%;
+    color: #CED4DA;
+    align-self: center;
+}
+
+#card-search > .delete-button {
+    margin-right: 2px;
+    font-size: 14px;
+    background-color: #CED4DA;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    align-self: center;
+}
+
+#card-body{
+    width: 100%;
+    height: 80%;
+    margin: 0;
+    padding: 1%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 1px;
+    background-color: white;
+}
+
+#card-body > #card-body-todo-table-container {
+    height: 80%;
+    padding: 5% 5% 2% 5%;
+    margin: 0px 0px 15px 0px;
+    overflow-y: auto;
+}
+
+ul.table {
+    display: flex;
+    flex-direction: column;
+}
+
+li.bullet {
+    display: flex;
+    flex-grow: 1;
+    border: 0.5px solid;
+    border-color: #DEE2E6;
+    border-radius: 0px;
+    background-color: white;
+    padding: 3% 0% 2% 4%;
+}  
+
+li.bullet:hover {
+    cursor: not-allowed;
+}
+
+li.bullet > label {
+    font-family: 'Roboto', sans-serif;
+    flex-grow: 1;
+    align-self: center;
+}
+
+li.bullet > button {
+    height: 20px;
+    width: 13%;
+    font-size: 0.2em;
+    text-align: center;
+    align-self: center;
+    color: white;
+    border: 1px solid;
+    border-radius: 6px;
+    border-color: white;
+    margin-right: 3%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+    
+li.bullet > button.green {
+    background-color: #28A745;   
+}
+li.bullet > button.green:hover {
+    background-color: #c7d2dd;
+}
+li.bullet > button.gray {
+    background-color: #CED4DA;
+}
+li.bullet > button.gray:hover {
+    background-color: #28A745;
+}
+
+#card-body-todo-add-container {
+    height: 20%;
+    max-height: 40px;
+    padding: 0% 5% 2% 5%;
+    margin: 15px 0px 0px 0px;
+}
+
+#card-body-todo-add-container > * {
+    font-size: medium;
+}
+
+#card-body-todo-add {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid;
+    border-color: #DEE2E6;
+    border-radius: 4px;
+    height: 100%;
+}
+
+#card-body-todo-add > input {
+    width: 75%;
+    background-color: white;
+    padding: 3%;
+}
+
+#card-body-todo-add > input::placeholder {
+    color: #CED4DA;
+}
+
+#card-body-todo-add > button {
+    width: 25%;
+    background-color: #E9ECEF;
+    text-align: center;
+    border-left: 1px solid #CED4DA;
+    color: #CED4DA;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#card-body-todo-add > button:hover {
+    background-color: #c7d2dd;
+    color: white;
+}

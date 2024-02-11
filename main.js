@@ -1,14 +1,16 @@
+'use strict'
+
 // Retrieve toDoJson
 const storedToDoJson = JSON.parse(localStorage.getItem('toDoJson'));
 const toDoTable = document.getElementById('todo-table');
 toDoTable.innerHTML = '';
-
+const searchTextElement = document.getElementById('card-search-input');
 for (const idx in storedToDoJson) {
     const [label, status] = storedToDoJson[idx];
     addNewToDo(label, status);
 }
 
-const addToDoBtn = document.querySelector('#addtodo-btn');
+const addToDoBtn = document.querySelector('.add-button');
 const newToDoInput = document.querySelector('#newtodo');
 
 /*
@@ -28,10 +30,11 @@ function getNewToDoNode (label, status) {
 }
 
 function addNewToDo (label, status='gray') {
-    if (label) {
+    if (label.trim()) {
         const newToDoNode = getNewToDoNode(label, status)
         toDoTable.appendChild(newToDoNode)    
     }
+    displaySearchedTable();
 };
 
 addToDoBtn.addEventListener('click', () => {
@@ -96,7 +99,7 @@ document.addEventListener('click', function(event) {
 /*
 Search Input Handler
 */ 
-const dispSearchedTable = () => {
+function displaySearchedTable() {
     const searchPattern = searchTextElement.value.toLowerCase();
     for (let i = 0; i < toDoTable.children.length; i++) {
         const task = toDoTable.children[i];
@@ -109,8 +112,7 @@ const dispSearchedTable = () => {
     }
 };
 
-const searchTextElement = document.getElementById('card-search-input');
-searchTextElement.addEventListener('input', dispSearchedTable)
+searchTextElement.addEventListener('input', displaySearchedTable)
 
 /*
 Save Html
@@ -143,7 +145,6 @@ const toDoTable2Json = () => {
         obj[i] = [label.textContent, status.className];
     }
     const json = JSON.stringify(obj);
-    console.log(json);
     return json;
 };
 

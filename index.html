@@ -4,15 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, minimum-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i&display=swap">
-    <!-- reset.css comes before style.css to reset browser default css -->
-    <link rel="stylesheet" href="public/reset.css"> 
-    <link rel="stylesheet" href="public/style.css"> 
+    <link rel="stylesheet" href="reset.css"> 
+    <link rel="stylesheet" href="style.css"> 
     <title>TODO App</title>
   </head>
   <body>
       <div id=card-container>
         <div id="card-header"> 
-          <div id="card-title"><h1 style="font-weight: bold;">Card Header</h1></div>
+          <div id="card-title">
+            <h1>Card Header</h1>
+          </div>
           <div id="card-search"> 
             <input id="card-search-input" type="text" placeholder="Search"></input>
             <button class="delete-button">&times;</button>
@@ -26,12 +27,12 @@
           <div id="card-body-todo-add-container">
             <div id="card-body-todo-add"> 
               <input id="newtodo" type="text" placeholder="New Todo"></input>
-              <button id="addtodo-btn" type="button">Add Todo</button>
+              <button class="add-button" type="button">Add Todo</button>
             </div>
           </div> 
         </div>
       </div>
   </body>
-  <script src="index.js"></script>
+  <script src="main.js"></script>
 </html>
 

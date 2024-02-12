@@ -81,8 +81,8 @@ function taskList2Json() {
 
   for (let i = 0; i < taskList.children.length; i++) {
     const taskElement = taskList.children[i];
-    const label = taskElement.children[1];
-    obj.push([label.textContent, taskElement.getAttribute("status")]);
+    const taskLabel = taskElement.querySelector("label").textContent;
+    obj.push([taskLabel, taskElement.getAttribute("status")]);
   }
 
   const json = JSON.stringify(obj);
@@ -95,20 +95,10 @@ function saveTaskList() {
 }
 
 function retrieveTaskTable() {
-  let parsedTaskList;
 
-  try {
-    const storedTaskList = localStorage.getItem("taskListJson");
-    parsedTaskList = JSON.parse(storedTaskList);
-  } catch (error) {
-    console.log(
-      "Couldn't find previous todo list in local storage\n -> initializing an empty list"
-    );
-    parsedTaskList = [];
-  }
-
-  taskList.innerHTML = "";
-
+  const storedTaskList = localStorage.getItem("taskListJson");
+  const parsedTaskList = JSON.parse(storedTaskList);
+  console.log(parsedTaskList);
   for (const idx in parsedTaskList) {
     const [label, status] = parsedTaskList[idx];
     addNewTask(label, status);
@@ -116,6 +106,8 @@ function retrieveTaskTable() {
 }
 
 (function myApp() {
+
+  taskList.innerHTML = "";
   retrieveTaskTable();
   taskAddBtn.addEventListener("click", () => {
     addNewTask(newTaskInput.value);

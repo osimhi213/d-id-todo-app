@@ -37,13 +37,13 @@ body {
     flex-grow: 1;
 }
 
-#card-header > #card-title > h1 {
+.title {
     font-weight: bold;
     font-size: 1.5rem;
 }
 
 #card-header > #card-search {
-    width: 40%; /* FIXME */
+    width: 100px;
     display: flex;
     flex-grow: 1;
     flex-direction: row;
@@ -58,12 +58,16 @@ body {
     color: #CED4DA;
 }
 
-#card-search > .delete-button { 
+#card-search > .delete-button {
+    font-size: 0.7rem;
     background-color: #CED4DA;
     color: white;
     border-radius: 50%;
-    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding: 0px 4px;
     align-self: center;
+    cursor: pointer;
 }
 
 #card-body {
@@ -77,38 +81,38 @@ body {
     background-color: white;
 }
 
-#card-body > #card-body-todo-table-container {
+#card-body > #task-list-container {
     max-height: 80%;
     overflow-y: scroll;
 }
 
-ul.table {
+#task-list {
     display: flex;
     flex-direction: column;
-    border: 1px solid;
-    border-color: #DEE2E6;
 }
 
-li.bullet {
+#task-list > .task {
     display: flex;
     border: 1px solid;
+    border-top: none;
     border-color: #DEE2E6;
     background-color: white;
     padding: 10px;
 }  
 
-li.bullet:hover {
-    cursor: pointer;
+#task-list > .task:first-of-type {
+    border-top: 1px solid #DEE2E6;
 }
 
-li.bullet > label {
-    font-family: 'Roboto', sans-serif;
+li.task > label {
     flex-grow: 1;
     align-self: center;
+    font-size: 1.2rem;
+    padding-left: 10px;
 }
 
-li.bullet > button {
-    font-size: 0.5rem;
+li.task > button {
+    font-size: 0.6rem;
     text-align: center;
     align-self: center;
     color: white;
@@ -120,19 +124,31 @@ li.bullet > button {
     
 }
 
-li.bullet > button.green {
-    background-color: #6dca81;   
+li.task > button.done {
+    background-color: rgb(38, 203, 73);
 }
 
-li.bullet > button.gray {
+li.task > button.done:hover {
+    background-color: #8bd49b;
+}
+
+li.task > button.undone {
     background-color: #CED4DA;
 }
 
-#card-body-todo-add-container {
+li.task > button.undone:hover {
+    background-color: #90969d;
+}
+
+li.task > .gg-trash:hover {
+    cursor: pointer;
+}
+
+#new-task-container {
     max-height: 40px;
 }
 
-#card-body-todo-add {
+#new-task-box {
     display: flex;
     flex-direction: row;
     border: 1px solid;
@@ -140,17 +156,17 @@ li.bullet > button.gray {
     border-radius: 4px;
 }
 
-#card-body-todo-add > input {
+#new-task-text {
     flex-grow: 1;
     background-color: white;
     padding: 6px;
 }
 
-#card-body-todo-add > input::placeholder {
+#new-task-box > input::placeholder {
     color: #CED4DA;
 }
 
-#card-body-todo-add > button {
+#new-task-box > button {
     padding: 6px;
     background-color: #E9ECEF;
     text-align: center;
@@ -160,7 +176,7 @@ li.bullet > button.gray {
     transition: background-color 0.3s, color 0.3s;
 }
 
-#card-body-todo-add > button:hover {
+#new-task-box > button:hover {
     background-color: #c7d2dd;
     color: white;
 }

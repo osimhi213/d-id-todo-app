@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, minimum-scale=1">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i&display=swap">
     <link rel="stylesheet" href="reset.css"> 
+    <link rel="stylesheet" href="trash.css">
     <link rel="stylesheet" href="style.css"> 
     <title>TODO App</title>
   </head>
@@ -12,22 +12,22 @@
       <div id=card-container>
         <div id="card-header"> 
           <div id="card-title">
-            <h1>Card Header</h1>
+            <h1 class="title">Card Header</h1>
           </div>
           <div id="card-search"> 
             <input id="card-search-input" type="text" placeholder="Search"></input>
-            <button class="delete-button">&times;</button>
+            <button id="search-delete-button" class="delete-button">&times;</button>
           </div>     
         </div>
         <div id="card-body"> 
-          <div id="card-body-todo-table-container">
-            <ul id="todo-table" class="table">
+          <div id="task-list-container">
+            <ul id="task-list" class="list">
             </ul>
           </div>
-          <div id="card-body-todo-add-container">
-            <div id="card-body-todo-add"> 
-              <input id="newtodo" type="text" placeholder="New Todo"></input>
-              <button class="add-button" type="button">Add Todo</button>
+          <div id="new-task-container">
+            <div id="new-task-box"> 
+              <input id="new-task-text" type="text" placeholder="New Todo"></input>
+              <button id="new-task-add-button" type="button">Add Todo</button>
             </div>
           </div> 
         </div>

@@ -1,150 +1,141 @@
-'use strict'
+"use strict";
 
-// Retrieve toDoJson
-const storedToDoJson = JSON.parse(localStorage.getItem('toDoJson'));
-const toDoTable = document.getElementById('todo-table');
-toDoTable.innerHTML = '';
-const searchTextElement = document.getElementById('card-search-input');
-for (const idx in storedToDoJson) {
-    const [label, status] = storedToDoJson[idx];
-    addNewToDo(label, status);
+const taskList = document.getElementById("task-list");
+const searchTextInput = document.getElementById("card-search-input");
+const searchBoxDeleteBtn = document.getElementById("search-delete-button");
+const newTaskInput = document.getElementById("new-task-text");
+const taskAddBtn = document.getElementById("new-task-add-button");
+
+function getNewTaskElement(label, status) {
+  const newTaskElement = document.createElement("li");
+  const labelElement = document.createElement("label");
+  const statusBtnElement = document.createElement("button");
+  const trashElement = document.createElement("i");
+
+  newTaskElement.classList.add("task");
+  statusBtnElement.classList.add(status);
+  trashElement.classList.add("gg-trash");
+
+  labelElement.textContent = label;
+  statusBtnElement.textContent = "Done";
+
+  newTaskElement.appendChild(trashElement);
+  newTaskElement.appendChild(labelElement);
+  newTaskElement.appendChild(statusBtnElement);
+
+  return newTaskElement;
 }
 
-const addToDoBtn = document.querySelector('.add-button');
-const newToDoInput = document.querySelector('#newtodo');
+function addNewTask(label, status = "undone") {
+  if (label.trim()) {
+    const newTaskElement = getNewTaskElement(label, status);
+    taskList.appendChild(newTaskElement);
+  } else {
+    console.log("Cannot add an empty task");
+  }
 
-/*
-New task functionality (sorted by created_at) 
-*/ 
-function getNewToDoNode (label, status) {
-    var newToDoNode = document.createElement("li");
-    newToDoNode.classList.add("bullet");
-    var labelElement = document.createElement("label");
-    labelElement.textContent = label;
-    var button = document.createElement("button");
-    button.classList.add(status);
-    button.textContent = "Done";
-    newToDoNode.appendChild(labelElement);
-    newToDoNode.appendChild(button);
-    return newToDoNode;
+  saveTaskList();
+  displaySearchedList();
 }
 
-function addNewToDo (label, status='gray') {
-    if (label.trim()) {
-        const newToDoNode = getNewToDoNode(label, status)
-        toDoTable.appendChild(newToDoNode)    
+function changeTaskStatus(btn) {
+  btn.classList.toggle("done");
+  btn.classList.toggle("undone");
+  saveTaskList();
+}
+
+function deleteTask(taskElement) {
+  taskElement.remove();
+  saveTaskList();
+}
+
+function flushSearchBox() {
+  searchTextInput.value = "";
+
+  for (let i = 0; i < taskList.children.length; i++) {
+    const taskElement = taskList.children[i];
+    taskElement.style.display = "flex";
+  }
+}
+
+function displaySearchedList() {
+  const searchPattern = searchTextInput.value.toLowerCase();
+
+  for (let i = 0; i < taskList.children.length; i++) {
+    const taskElement = taskList.children[i];
+    const taskLabel = taskElement.querySelector("label").textContent;
+    taskElement.style.display = taskLabel.toLowerCase().includes(searchPattern)
+      ? "flex"
+      : "none";
+  }
+}
+
+function taskList2Json() {
+  const obj = [];
+
+  for (let i = 0; i < taskList.children.length; i++) {
+    const taskElement = taskList.children[i];
+    const [_, label, status] = taskElement.children;
+    obj.push([label.textContent, status.className]);
+  }
+
+  const json = JSON.stringify(obj);
+
+  return json;
+}
+
+function saveTaskList() {
+  localStorage.setItem("taskListJson", taskList2Json());
+}
+
+function retrieveTaskTable() {
+  let parsedTaskList;
+
+  try {
+    const storedTaskList = localStorage.getItem("taskListJson");
+    parsedTaskList = JSON.parse(storedTaskList);
+  } catch (error) {
+    console.log(
+      "Couldn't find previous todo list in local storage\n -> initializing an empty list"
+    );
+    parsedTaskList = [];
+  }
+
+  taskList.innerHTML = "";
+
+  for (const idx in parsedTaskList) {
+
+    const [label, status] = parsedTaskList[idx];
+    addNewTask(label, status);
+
+  }
+}
+
+
+(function myApp() {
+
+  retrieveTaskTable();
+  taskAddBtn.addEventListener("click", () => {
+    addNewTask(newTaskInput.value);
+    newTaskInput.value = "";
+  });
+
+  newTaskInput.addEventListener("keypress", (event) => {
+    if (event.code === "Enter") {
+      addNewTask(newTaskInput.value);
+      newTaskInput.value = "";
     }
-    displaySearchedTable();
-};
+  });
 
-addToDoBtn.addEventListener('click', () => {
-    addNewToDo(newToDoInput.value);
-    newToDoInput.value = '';
-});
+  searchBoxDeleteBtn.addEventListener("click", flushSearchBox);
+  searchTextInput.addEventListener("input", displaySearchedList);
 
-newToDoInput.addEventListener('keypress', (event) => {
-    if (event.code === 'Enter') {
-        addNewToDo(newToDoInput.value)
-        newToDoInput.value = '';
-    } 
-});
-
-/*
-Complete task functionality
-*/ 
-const completeTask = (btn) => {
-    btn.classList.toggle('green');
-    btn.classList.toggle('gray');
-};
-
-/*
-Delete task functionality
-*/ 
-const deleteTask = (clickedElement) => {
-    const li = clickedElement.matches('li') ? clickedElement : clickedElement.parentNode;
-    toDoTable.removeChild(li);
-};
-
-/*
-Delete search box functionality
-*/ 
-const deleteSearchBoxText = () => {
-    searchTextElement.value = '';
-    for (let i = 0; i < toDoTable.children.length; i++) {
-        const task = toDoTable.children[i];
-        task.style.display = 'flex';
-    }
-};
-
-
-/*
-Clicks Handler
-*/ 
-document.addEventListener('click', function(event) {
+  document.addEventListener("click", function (event) {
     const clickedElement = event.target;
-    // complete
-    if (clickedElement.matches('li.bullet > button')) {
-        completeTask(clickedElement);
-
-    // delete task
-    } else if (clickedElement.matches('li') || clickedElement.matches('li > label')) {
-        deleteTask(clickedElement);
-    
-    // delete search box
-    } else if (clickedElement.matches('.delete-button')) { 
-        deleteSearchBoxText(clickedElement);
+    if (clickedElement.matches("li.task > button")) {
+      changeTaskStatus(clickedElement);
+    } else if ( clickedElement.matches("li.task > .gg-trash") ) {
+      deleteTask(clickedElement.parentNode);
     }
-});
-
-/*
-Search Input Handler
-*/ 
-function displaySearchedTable() {
-    const searchPattern = searchTextElement.value.toLowerCase();
-    for (let i = 0; i < toDoTable.children.length; i++) {
-        const task = toDoTable.children[i];
-        const taskLabel = task.querySelector('label').textContent;
-        if (!taskLabel.toLowerCase().includes(searchPattern)) {
-            task.style.display = 'none';
-        } else {
-            task.style.display = 'flex';
-        }
-    }
-};
-
-searchTextElement.addEventListener('input', displaySearchedTable)
-
-/*
-Save Html
-*/ 
-
-// Create an observer to find mutations in toDoTable (target)
-const observer = new MutationObserver((mutationsList, observer) => {
-    if (mutationsList) {
-        saveTableAsJson();
-    }
-});
-const observerOptions = {
-    subtree: true,
-    childList: true,
-    attributes: true,
-};
-observer.observe(toDoTable, observerOptions);
-
-
-// if triggered than table has changed and we need to save it to localStorage
-const saveTableAsJson = () => {
-    localStorage.setItem('toDoJson', toDoTable2Json());
-}
-
-const toDoTable2Json = () => {
-    let obj = {};
-    for (let i = 0; i < toDoTable.children.length; i++) {
-        const task = toDoTable.children[i];
-        const [label, status] = task.children;
-        obj[i] = [label.textContent, status.className];
-    }
-    const json = JSON.stringify(obj);
-    return json;
-};
-
+  });
+})();

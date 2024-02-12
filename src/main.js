@@ -97,7 +97,6 @@ function saveTaskList() {
 function retrieveTaskTable() {
   const storedTaskList = localStorage.getItem("taskListJson");
   const parsedTaskList = JSON.parse(storedTaskList);
-  console.log(parsedTaskList);
   for (const idx in parsedTaskList) {
     const [label, status] = parsedTaskList[idx];
     addNewTask(label, status);

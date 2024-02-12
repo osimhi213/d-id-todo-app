@@ -95,7 +95,6 @@ function saveTaskList() {
 }
 
 function retrieveTaskTable() {
-
   const storedTaskList = localStorage.getItem("taskListJson");
   const parsedTaskList = JSON.parse(storedTaskList);
   console.log(parsedTaskList);
@@ -106,7 +105,6 @@ function retrieveTaskTable() {
 }
 
 (function myApp() {
-
   taskList.innerHTML = "";
   retrieveTaskTable();
   taskAddBtn.addEventListener("click", () => {

@@ -111,7 +111,7 @@ li.task > label {
     padding-left: 10px;
 }
 
-li.task > button {
+li.task > button.status {
     font-size: 0.6rem;
     text-align: center;
     align-self: center;
@@ -124,21 +124,26 @@ li.task > button {
     
 }
 
-li.task > button.done {
+li.task[status='done'] > label {
+    text-decoration: line-through;
+}
+
+li.task[status='done'] > button.status {
     background-color: rgb(38, 203, 73);
 }
 
-li.task > button.done:hover {
+li.task[status='done'] > button.status:hover {
     background-color: #8bd49b;
 }
 
-li.task > button.undone {
+li.task[status='undone'] > button.status {
     background-color: #CED4DA;
 }
 
-li.task > button.undone:hover {
+li.task[status='undone'] > button.status:hover {
     background-color: #90969d;
 }
+
 
 li.task > .gg-trash:hover {
     cursor: pointer;

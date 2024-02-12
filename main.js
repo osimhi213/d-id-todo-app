@@ -12,8 +12,9 @@ function getNewTaskElement(label, status) {
   const statusBtnElement = document.createElement("button");
   const trashElement = document.createElement("i");
 
+  newTaskElement.setAttribute("status", status);
   newTaskElement.classList.add("task");
-  statusBtnElement.classList.add(status);
+  statusBtnElement.classList.add("status");
   trashElement.classList.add("gg-trash");
 
   labelElement.textContent = label;
@@ -33,14 +34,19 @@ function addNewTask(label, status = "undone") {
   } else {
     console.log("Cannot add an empty task");
   }
-
   saveTaskList();
   displaySearchedList();
 }
 
-function changeTaskStatus(btn) {
-  btn.classList.toggle("done");
-  btn.classList.toggle("undone");
+function changeTaskStatus(statusBtnElement) {
+  const newTaskElement = statusBtnElement.parentNode;
+  const status = newTaskElement.getAttribute("status");
+
+  if (status === "done") {
+    newTaskElement.setAttribute("status", "undone");
+  } else {
+    newTaskElement.setAttribute("status", "done");
+  }
   saveTaskList();
 }
 
@@ -75,8 +81,8 @@ function taskList2Json() {
 
   for (let i = 0; i < taskList.children.length; i++) {
     const taskElement = taskList.children[i];
-    const [_, label, status] = taskElement.children;
-    obj.push([label.textContent, status.className]);
+    const label = taskElement.children[1];
+    obj.push([label.textContent, taskElement.getAttribute("status")]);
   }
 
   const json = JSON.stringify(obj);
@@ -104,16 +110,12 @@ function retrieveTaskTable() {
   taskList.innerHTML = "";
 
   for (const idx in parsedTaskList) {
-
     const [label, status] = parsedTaskList[idx];
     addNewTask(label, status);
-
   }
 }
 
-
 (function myApp() {
-
   retrieveTaskTable();
   taskAddBtn.addEventListener("click", () => {
     addNewTask(newTaskInput.value);
@@ -132,9 +134,9 @@ function retrieveTaskTable() {
 
   document.addEventListener("click", function (event) {
     const clickedElement = event.target;
-    if (clickedElement.matches("li.task > button")) {
+    if (clickedElement.matches("li.task > button.status")) {
       changeTaskStatus(clickedElement);
-    } else if ( clickedElement.matches("li.task > .gg-trash") ) {
+    } else if (clickedElement.matches("li.task > .gg-trash")) {
       deleteTask(clickedElement.parentNode);
     }
   });

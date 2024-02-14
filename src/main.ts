@@ -21,25 +21,25 @@ function isValidTask(obj: any): obj is Task {
   return obj && typeof obj.label === "string" && isValidStatus(obj.status);
 }
 
-function isValidStatus(status: any): status is Task["status"] {
+function isValidStatus(status: unknown): status is Task["status"] {
   return status === "done" || status === "undone";
 }
 
 function getHTMLElementById(id: string): HTMLElement {
   const htmlElement = document.getElementById(id);
 
-  if (htmlElement !== null) {
-    return htmlElement;
+  if (htmlElement === null) {
+    throw new Error("No matching element was found in the document!");
   }
 
-  throw new Error("No matching element was found in the document!");
+  return htmlElement;
 }
 
 function getTaskLabel(taskElement: HTMLElement): Task["label"] {
   const taskLabel = taskElement.querySelector("label")?.textContent;
 
   if (!taskLabel) {
-    throw new Error("Got no task or textContent");
+    throw new Error("Got no task or text content");
   }
 
   return taskLabel;
@@ -74,12 +74,10 @@ function getNewTaskElement(newTask: Task): HTMLLIElement {
   newTaskElement.appendChild(labelElement);
   newTaskElement.appendChild(statusBtnElement);
 
-  statusBtnElement.addEventListener("click", () => {
-    changeTaskStatus(newTaskElement);
-  });
-  trashElement.addEventListener("click", () => {
-    deleteTask(newTaskElement);
-  });
+  statusBtnElement.addEventListener("click", () =>
+    changeTaskStatus(newTaskElement)
+  );
+  trashElement.addEventListener("click", () => deleteTask(newTaskElement));
 
   return newTaskElement;
 }
@@ -110,7 +108,9 @@ function flushSearchBox(): void {
   searchTextInput.value = "";
 
   for (const taskElement of taskList.children) {
-    if (taskElement instanceof HTMLElement) taskElement.style.display = "flex";
+    if (taskElement instanceof HTMLElement) {
+      taskElement.style.display = "flex";
+    }
   }
 }
 
@@ -154,7 +154,7 @@ function storeTaskList(): void {
 function retrieveTaskList(): void {
   const storedTaskList = localStorage.getItem("storedTaskList");
 
-  if (storedTaskList !== null) {
+  if (storedTaskList) {
     const parsedTaskList = JSON.parse(storedTaskList);
 
     for (const taskElement of parsedTaskList) {
